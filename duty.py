@@ -10,4 +10,5 @@ class DutyFactory:
     
     def create_duty(self, name, description):
         new_duty = Duty(name, description, self.id_counter)
+        self.id_counter += 1
         return new_duty

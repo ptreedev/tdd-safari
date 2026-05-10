@@ -58,13 +58,13 @@ def test_factory_creates_a_an_instance_of_a_duty():
     assert name, description in d1
     assert d1.id == 1
 
-# def test_factory_ensures_no_duplicate_ids():
-#     factory = DutyFactory()
-#     d1 = factory.create_duty("d1", "description 1")
-#     d2 = factory.create_duty("d2", "description 2")
+def test_factory_ensures_no_duplicate_ids():
+    factory = DutyFactory()
+    d1 = factory.create_duty("d1", "description 1")
+    d2 = factory.create_duty("d2", "description 2")
 
-#     assert d1.id != d2.id
-#     assert d1.id == 1
-#     assert d2.id == 2
+    assert d1.id != d2.id
+    assert d1.id == 1
+    assert d2.id == 2
 
     
