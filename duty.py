@@ -11,9 +11,12 @@ class DutyFactory:
     
     def create_duty(self, name, description):
         if name in self.duty_names:
-            raise ValueError("A duty with this name already exists")
+            raise DuplicateNameError("A duty with this name already exists")
         new_duty = Duty(name, description, self.id_counter)
 
         self.id_counter += 1
         self.duty_names.add(name)
         return new_duty
+    
+class DuplicateNameError(Exception):
+    pass
