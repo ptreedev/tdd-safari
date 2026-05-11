@@ -4,7 +4,7 @@
 # should it have any behaviour? A check for uniqueness?
 # 
 
-from duty import DuplicateNameError, Duty, DutyFactory
+from duty import DuplicateDescriptionError, DuplicateNameError, Duty, DutyFactory
 import pytest
 
 def test_duty_has_name_description_and_id_when_initialised():
@@ -42,5 +42,14 @@ def test_no_duplicate_name_for_duty():
         factory.create_duty("d1", "other desc")
     
     assert "A duty with this name already exists" in str(exc_info.value)
+
+def test_no_duplicate_description_for_duty():
+    factory =  DutyFactory()
+    factory.create_duty("d1", "description 1")
+
+    with pytest.raises(DuplicateDescriptionError) as exc_info:
+        factory.create_duty("d2", "description 1")
+
+    assert "A duty with this description already exists" in str(exc_info)
 
     
