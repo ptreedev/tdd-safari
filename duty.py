@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+import json
+from pathlib import Path
 @dataclass
 class Duty:
     name: str
@@ -19,13 +21,19 @@ class DutyFactory:
 
 #This will handle the state of the duties rather than Factory    
 class DutyRepository:
-    def __init__(self):
+    def __init__(self, filepath):
         self.factory = DutyFactory()
+        self.filepath = Path(filepath)
+        self._duties = self._load()
         self.description = set()
         self.duty_names = set()
 
     def _load(self):
-        return []
+        if not self.filepath.exists():
+            return []
+        with open(self.filepath, "r") as dutyfile:
+            return [Duty(**d) for d in json.load(dutyfile)]
+       
 
     def add(self, name, description):
         if name in self.duty_names:
@@ -40,7 +48,7 @@ class DutyRepository:
         return duty
     
     def all(self):
-        return []
+        return self._duties
     
 class DuplicateNameError(Exception):
     pass
