@@ -24,6 +24,9 @@ class DutyRepository:
         self.description = set()
         self.duty_names = set()
 
+    def _load(self):
+        return []
+
     def add(self, name, description):
         if name in self.duty_names:
             raise DuplicateNameError("A duty with this name already exists")
@@ -35,6 +38,9 @@ class DutyRepository:
         self.description.add(description)
 
         return duty
+    
+    def all(self):
+        return []
     
 class DuplicateNameError(Exception):
     pass
