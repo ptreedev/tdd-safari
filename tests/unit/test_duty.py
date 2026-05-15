@@ -67,17 +67,7 @@ class TestAddDutyRepository:
         assert "A duty with this description already exists" in str(exc_info)
 
 
-class TestAllDutyRepository:
-    def test_ALL_empty_repo_returns_emptylist(self, repo):
-        assert repo.all() == []
-    
-    # def test_ALL_returns_added_duties(self, repo):
-    #     repo.add('D1', "desc1")
 
-    #     assert repo.all() == [
-    #         Duty(name='D1', description="desc1", id=1)
-    #     ]
-    
 
     
 

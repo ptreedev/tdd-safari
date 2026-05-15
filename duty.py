@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 import json
 from pathlib import Path
 @dataclass
@@ -32,7 +32,11 @@ class DutyRepository:
         if not self.filepath.exists():
             return []
         with open(self.filepath, "r") as dutyfile:
-            return [Duty(**d) for d in json.load(dutyfile)]
+            return [Duty(**duty) for duty in json.load(dutyfile)]
+        
+    def _save(self):
+        with open(self.filepath, "w") as f:
+            json.dump([asdict(duty) for duty in self._duties], f)
        
 
     def add(self, name, description):
@@ -42,8 +46,11 @@ class DutyRepository:
             raise DuplicateDescriptionError("A duty with this description already exists")
         
         duty = self.factory.create_duty(name, description)
+        # currently state is stored in memory, need a refactor for peristence.
         self.duty_names.add(name)
         self.description.add(description)
+        self._duties.append(duty)
+        self._save()
 
         return duty
     
