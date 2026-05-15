@@ -38,17 +38,18 @@ class DutyRepository:
         with open(self.filepath, "w") as f:
             json.dump([asdict(duty) for duty in self._duties], f)
        
+    def _check_unique(self, name, description):
+
+        if any(duty.name == name for duty in self._duties):
+            raise DuplicateNameError("A duty with this name already exists")
+        if any(duty.description == description for duty in self._duties):
+            raise DuplicateDescriptionError("A duty with this description already exists")
 
     def add(self, name, description):
-        if name in self.duty_names:
-            raise DuplicateNameError("A duty with this name already exists")
-        if description in self.description:
-            raise DuplicateDescriptionError("A duty with this description already exists")
+        self._check_unique(name, description)
         
         duty = self.factory.create_duty(name, description)
-        # currently state is stored in memory, need a refactor for peristence.
-        self.duty_names.add(name)
-        self.description.add(description)
+
         self._duties.append(duty)
         self._save()
 
