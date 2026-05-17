@@ -29,3 +29,12 @@ def test_GET_duties_shows_multiple_existing_duties(client, repo):
     response = client.get("/duties")
     assert "D2" in response.text
     assert "D3" in response.text
+
+def test_GET_new_duty_form_renders_form(client):
+    response = client.get("/duties/new")
+    assert response.status_code == 200
+    assert b'<form' in response.data
+    assert b'action="/duties"' in response.data
+    assert b'method="post"' in response.data
+    assert b'name="name"' in response.data
+    assert b'name="description"' in response.data

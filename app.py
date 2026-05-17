@@ -17,11 +17,18 @@ def create_app(repo=None):
 
     @app.route('/')
     def index():
-        return "hello there"
+        return """
+        hello there
+        <a href="/duties"> Duties </a>
+        """
     
-    @app.route('/duties', methods=["GET"])
+    @app.route('/duties')
     def duties_list():
         return controller.list()
+    
+    @app.route('/duties/new')
+    def duties_new_form():
+        return controller.new_form()
 
     return app
 
