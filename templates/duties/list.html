@@ -1,6 +1,15 @@
   <!doctype html>
   <html>
   <head><title>Duties</title></head>
+   {% with messages = get_flashed_messages() %}
+      {% if messages %}
+          <ul class="flashes">
+          {% for message in messages %}
+              <li>{{ message }}</li>
+          {% endfor %}
+          </ul>
+      {% endif %}
+  {% endwith %}
   <body>
       <h1>Duties</h1>
       <a href="/duties/new">Add Duty</a>
