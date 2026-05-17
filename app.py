@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 
 from pathlib import Path
 
@@ -13,6 +13,7 @@ def create_app(repo=None):
         repo = DutyRepository(filepath=BASE_DIR / "duties.json")
 
     app = Flask(__name__)
+    app.secret_key="dev-secret"
     controller = DutyController(repo)
 
     @app.route('/')
@@ -29,6 +30,13 @@ def create_app(repo=None):
     @app.route('/duties/new')
     def duties_new_form():
         return controller.new_form()
+    
+    @app.post('/duties')
+    def duties_create():
+        return controller.create_duty(
+              name=request.form["name"],
+              description=request.form["description"],
+          )
 
     return app
 

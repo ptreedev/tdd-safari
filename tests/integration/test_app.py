@@ -38,3 +38,25 @@ def test_GET_new_duty_form_renders_form(client):
     assert b'method="post"' in response.data
     assert b'name="name"' in response.data
     assert b'name="description"' in response.data
+
+def test_POST_duties_creates_duty(client, repo):
+    response = client.post(
+        "/duties",
+        data={"name": "D3", "description": "Desc 3"},
+    )
+    assert response.status_code == 302
+    assert any(d.name == "D3" for d in repo.all())
+
+def test_POST_duties_duplicate_name_does_not_create(client, repo):
+    repo.add("D1", "Original description")
+
+    response = client.post(
+        "/duties",
+        data={"name": "D1", "description": "Different description"},
+    )
+
+    assert response.status_code == 302
+    duties = [d for d in repo.all() if d.name == "D1"]
+    assert len(duties) == 1
+
+
