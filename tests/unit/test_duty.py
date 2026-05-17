@@ -4,6 +4,8 @@
 # should it have any behaviour? A check for uniqueness?
 # 
 
+import json
+
 from duty import DuplicateDescriptionError, DuplicateNameError, Duty, DutyFactory, DutyRepository
 import pytest
 
@@ -44,7 +46,7 @@ class TestAddDutyRepository:
 
         assert duty == Duty(name="D1", description="Description 1", id=1)
     
-    def test_ADD_assings_incrementing_ids(self, repo):
+    def test_ADD_assigns_incrementing_ids(self, repo):
         d1 = repo.add("D1", "Desc 1")
         d2 = repo.add("D2", "Desc 2")
         d3 = repo.add("D3", "Desc 3")
@@ -65,6 +67,20 @@ class TestAddDutyRepository:
             repo.add("d2", "description 1")
 
         assert "A duty with this description already exists" in str(exc_info)
+
+    def test_id_counter_starts_at_max_plus_one(self, tmp_path):
+        filepath = tmp_path / "duties.json"
+        existing = [
+            {"name": "D1", "description": "Desc 1", "id": 8},
+            {"name": "D2", "description": "Desc 2", "id": 9},
+            {"name": "D3", "description": "Desc 3", "id": 10},
+        ]
+        filepath.write_text(json.dumps(existing))
+
+        repo = DutyRepository(filepath=filepath)
+        new_duty = repo.add("D4", "Desc 4")
+
+        assert new_duty.id == 11
 
 
 

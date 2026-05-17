@@ -8,8 +8,8 @@ class Duty:
     id: int
 
 class DutyFactory:
-    def __init__(self):
-        self.id_counter = 1
+    def __init__(self, start_id=1):
+        self.id_counter = start_id
     
     def create_duty(self, name, description):
 
@@ -22,9 +22,10 @@ class DutyFactory:
 #This will handle the state of the duties rather than Factory    
 class DutyRepository:
     def __init__(self, filepath):
-        self.factory = DutyFactory()
         self.filepath = Path(filepath)
         self._duties = self._load()
+        next_id = max((d.id for d in self._duties), default=0) + 1
+        self.factory = DutyFactory(start_id=next_id)
 
     def _load(self):
         if not self.filepath.exists():
