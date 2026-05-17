@@ -9,3 +9,6 @@ class DutyController:
 
     def list(self) -> str:
         return render_template("duties/list.html", duties=self._duties)
+    
+    def new_form(self) -> str:
+        return render_template("duties/new_form.html")
