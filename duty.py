@@ -28,7 +28,7 @@ class DutyRepository:
         self.factory = DutyFactory(start_id=next_id)
 
     def _load(self):
-        if not self.filepath.exists():
+        if not self.filepath.exists() or self.filepath.stat().st_size == 0:
             return []
         with open(self.filepath, "r") as dutyfile:
             return [Duty(**duty) for duty in json.load(dutyfile)]

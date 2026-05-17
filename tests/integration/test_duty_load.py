@@ -11,15 +11,22 @@ class TestLoad:
  
         assert repo.all() == []
 
-    def test_populated_state_when_file_exists(self, mocker):
-        mocker.patch("duty.Path.exists", return_value=True)
-        json_content = json.dumps([
+    def test_empty_state_when_file_empty(self, tmp_path):
+        filepath = tmp_path / "duties.json"
+        filepath.touch()
+
+        repo = DutyRepository(filepath=filepath)
+
+        assert repo.all() == []
+
+    def test_populated_state_when_file_exists(self, tmp_path):
+        filepath = tmp_path / "duties.json"
+        filepath.write_text(json.dumps([
             {"id": 1, "name": "Cleaning", "description": "Sweep floors"},
             {"id": 2, "name": "Cooking", "description": "Make food"},
-        ])
-        mocker.patch("builtins.open", mocker.mock_open(read_data=json_content))
+        ]))
 
-        repo = DutyRepository(filepath="anything.json")
+        repo = DutyRepository(filepath=filepath)
 
         assert repo.all() == [
             Duty(name="Cleaning", description="Sweep floors", id=1),
