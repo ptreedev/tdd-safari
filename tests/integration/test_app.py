@@ -68,6 +68,29 @@ def test_POST_duties_duplicate_name_shows_error_to_user(client, repo):
         follow_redirects=True,
     )
 
-    assert b"already exists" in response.data
+    assert b"name already exists" in response.data
+
+def test_POST_duties_duplicate_description_does_not_create(client, repo):
+    repo.add("D1", "description")
+
+    response = client.post(
+        "/duties",
+        data={"name": "D2", "description": "description"},
+    )
+
+    assert response.status_code == 302
+    duties = [d for d in repo.all() if d.name == "D1"]
+    assert len(duties) == 1
+
+def test_POST_duties_duplicate_description_shows_error_to_user(client, repo):
+    repo.add("D1", "description")
+
+    response = client.post(
+        "/duties",
+        data={"name": "D2", "description": "description"},
+        follow_redirects=True,
+    )
+
+    assert b"description already exists" in response.data
 
 
