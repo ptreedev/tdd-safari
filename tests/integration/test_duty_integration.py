@@ -1,5 +1,4 @@
 
-# this has been moved as it's actually an integration test
 import pytest
 
 from duty import Duty, DutyRepository

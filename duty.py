@@ -25,8 +25,6 @@ class DutyRepository:
         self.factory = DutyFactory()
         self.filepath = Path(filepath)
         self._duties = self._load()
-        self.description = set()
-        self.duty_names = set()
 
     def _load(self):
         if not self.filepath.exists():
