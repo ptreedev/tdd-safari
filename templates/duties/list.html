@@ -1,22 +1,26 @@
-  <!doctype html>
-  <html>
-  <head><title>Duties</title></head>
-   {% with messages = get_flashed_messages() %}
-      {% if messages %}
-          <ul class="flashes">
-          {% for message in messages %}
-              <li>{{ message }}</li>
-          {% endfor %}
-          </ul>
-      {% endif %}
-  {% endwith %}
-  <body>
-      <h1>Duties</h1>
-      <a href="/duties/new">Add Duty</a>
-      <ul>
-      {% for duty in duties %}
-          <li>{{ duty.name }} — {{ duty.description }}</li>
-      {% endfor %}
-      </ul>
-  </body>
-  </html>
+<!doctype html>
+<html>
+    <head><title>Duties</title></head>
+
+    <body>
+        <h1>Duties</h1>
+        <h2>Automate Coin</h2>
+        <p>Add it's duties below</p>
+        <a href="/duties/new">Add Duty</a>
+        <ul>
+        {% for duty in duties %}
+            <li>{{ duty.name }} — {{ duty.description }}</li>
+        {% endfor %}
+        </ul>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="flashes">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+    </body>
+</html>
