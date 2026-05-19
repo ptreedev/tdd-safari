@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, request
 
 from pathlib import Path
@@ -10,7 +12,9 @@ from duty_controller import DutyController
 def create_app(repo=None):
     if repo is None:
         BASE_DIR = Path(__file__).parent
-        repo = DutyRepository(filepath=BASE_DIR / "duties.json")
+        default_path = BASE_DIR / "duties.json"
+        filepath = Path(os.environ.get("DUTIES_FILE", default_path))
+        repo = DutyRepository(filepath=filepath)
 
     app = Flask(__name__)
     app.secret_key="dev-secret"

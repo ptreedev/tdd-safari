@@ -1,0 +1,12 @@
+services:
+  app:
+    build: .
+    ports:
+      - 5001:5001
+    environment:
+      DUTIES_FILE: /data/duties.json
+    volumes:
+      - duties-data:/data
+
+volumes:
+  duties-data:
